@@ -19,6 +19,7 @@
     // Override point for customization after application launch.
     //NSLog(@"NSCachesDirectory = %@", [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]);
     //NSLog(@"NSDocumentDirectory = %@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]);
+    self.window.tintColor = [UIColor colorWithRed:.337f green:.57f blue:.731f alpha:1.f];
     return YES;
 }
 

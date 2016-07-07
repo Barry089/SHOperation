@@ -16,13 +16,15 @@
         NSURL *url = [NSURL URLWithString:urlStr];
         NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *t_image = [UIImage imageWithData:data];
+        //NSLog(@"Save to photosAlbum");
+        //UIImageWriteToSavedPhotosAlbum(t_image, nil, nil, nil);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (t_image) {
                 completeBlock(YES);
             }
             else {
-                completeBlock(YES);
+                completeBlock(NO);
             }
             self.image = t_image;
         });

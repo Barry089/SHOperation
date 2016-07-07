@@ -13,10 +13,25 @@
 @end
 
 @implementation ThreadViewController
+// Override to return the type of animation that should be used for status bar changes for this view controller. This currently only affects changes to prefersStatusBarHidden.
+// 首先，要清楚这个方法什么时候使用，正如上述对它的描述：当当前的viewController的statusBar发生隐藏的改变时，用到该方法；比如这里我设计的逻辑，上一个vc的statusBar没有隐藏，modal到此vc时，此vc的statusBar要hidden，故在此过程中statusBar要呈现的一个animation 即是该方法的作用；
+// 再次，就是要明确这中间的一个动作：即statusBar的隐藏动作，所以是要涉及到另一个方法prefersStatusBarHidden{}的。
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    NSLog(@"status bar animation");
+    //return UIStatusBarAnimationNone;
+    //return UIStatusBarAnimationFade;
+    return UIStatusBarAnimationSlide;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    NSLog(@"view did load");
+    self.view.backgroundColor = [UIColor orangeColor];
     for (int i=0; i<3; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [self.view addSubview:btn];
@@ -35,8 +50,17 @@
     }
     //因为多线程是不安全的，原因：当act1：中的counter在自增的时候，有可能cpu资源被其他线程抢断，导致其自增失败，从而少加一次或多次；对于act2:也是类似。针对这一状况，可以给线程加锁，作用是其所在的线程所占用的cpu资源不被抢占，保证其成功完成。
     _lock = [[NSLock alloc] init];
-    
     //[self performSelectorInBackground:@selector(<#selector#>) withObject:nil];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.view addSubview:btn];
+    btn.frame = CGRectMake(100, 500, 100, 40);
+    [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitle:@"Back Back" forState:UIControlStateNormal];
+}
+
+- (void)back {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)pressBtn:(UIButton *)button {
     if (button.tag == 101) {
